@@ -1,58 +1,113 @@
-import logging
-import sys
+import streamlit as st
+import os
+import openai
+from dotenv import load_dotenv
+from PyPDF2 import PdfReader
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
+from langchain.vectorstores import FAISS
+from langchain.chat_models import ChatOpenAI
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationalRetrievalChain
+from htmlTemplates import css, bot_template, user_template
+from langchain.llms import HuggingFaceHub
+from langchain.chains.question_answering import load_qa_chain
+from langchain.llms import OpenAI
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
+load_dotenv()
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
-from llama_index import VectorStoreIndex, SimpleDirectoryReader, ServiceContext
-from llama_index.llms import HuggingFaceLLM
-
-documents = SimpleDirectoryReader("/content/sample_data/").load_data()
-
-from llama_index.prompts.prompts import SimpleInputPrompt
-
-
-system_prompt = "You are a Q&A assistant. Your goal is to answer questions as accurately as possible based on the instructions and context provided."
-
-
-
-# This will wrap the default prompts that are internal to llama-index
-query_wrapper_prompt = SimpleInputPrompt("<|USER|>{query_str}<|ASSISTANT|>")
-
-import torch
-
-llm = HuggingFaceLLM(
+def get_pdf_text(pdf_docs):
+    text=""
+    for pdf in pdf_docs:
+        pdf_reader = PdfReader(pdf) #each pdf file
+        for page in pdf_reader.pages:
+            text += page.extract_text()
+    return text
     
-    context_window=4096,
-    max_new_tokens=256,
-    generate_kwargs={"temperature": 0.0, "do_sample": False},
-    system_prompt=system_prompt,
-    query_wrapper_prompt=query_wrapper_prompt,
-    tokenizer_name="meta-llama/Llama-2-7b-chat-hf",
-    model_name="meta-llama/Llama-2-7b-chat-hf",
-    device_map="auto",
-    # uncomment this if using CUDA to reduce memory usage
-    model_kwargs={"torch_dtype": torch.float16 , "load_in_8bit":True}
-)
+def get_text_chunks(raw_text):
+    text_splitter = CharacterTextSplitter(
+            separator="\n",
+            chunk_size=1000,
+            chunk_overlap=200,
+            length_function=len
+    )
+    chunks = text_splitter.split_text(raw_text)
+    return chunks
 
-from langchain.embeddings.huggingface import HuggingFaceEmbeddings
-from llama_index import LangchainEmbedding, ServiceContext
+def get_vectorstore(text_chunks):
+    embeddings = OpenAIEmbeddings()
+    # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
+    vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+    return vectorstore
 
-embed_model = LangchainEmbedding(
-  HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
-)
+def handle_userinput(user_question):
+    response = st.session_state.conversation({'question': user_question})
+    st.session_state.chat_history = response['chat_history']
+
+    for i, message in enumerate(st.session_state.chat_history):
+        if i % 2 == 0:
+            st.write(user_template.replace(
+                "{{MSG}}", message.content), unsafe_allow_html=True)
+        else:
+            st.write(bot_template.replace(
+                "{{MSG}}", message.content), unsafe_allow_html=True)
+
+def get_conversation_chain(vectorstore):
+    llm = ChatOpenAI(temperature=0.5, max_tokens=200)
+    # llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":51200})
+    memory = ConversationBufferMemory(
+        memory_key='chat_history', return_messages=True)
+    conversation_chain = ConversationalRetrievalChain.from_llm(
+        llm=llm,
+        retriever=vectorstore.as_retriever(),
+        memory=memory
+    )
+    return conversation_chain
+
+def main():
+    load_dotenv()
+    st.set_page_config(page_title = "Check PDFs")
+    st.write(css, unsafe_allow_html=True)
 
 
-service_context = ServiceContext.from_defaults(
-    chunk_size=1024,
-    llm=llm,
-    embed_model=embed_model
-)
+    if "conversation" not in st.session_state:
+            st.session_state.conversation = None
+    if "chat_history" not in st.session_state:
+            st.session_state.chat_history = None
+
+    st.header("Check PDFs")
+    user_question = st.text_input("Enter your question:")
+    if user_question:
+        handle_userinput(user_question)
+
+    # st.write(user_template.replace("{{MSG}}", "Hi Robot"), unsafe_allow_html=True)
+    # st.write(bot_template.replace("{{MSG}}", "Hi Human"), unsafe_allow_html=True) 
+
+    with st.sidebar:
+        st.subheader("Your documents")
+        pdf_docs = st.file_uploader("Upload your PDFs here", accept_multiple_files=True)
+        if st.button("Process"):
+            with st.spinner("Processing"):
+                #get text
+                raw_text = get_pdf_text(pdf_docs)
+                # st.write(raw_text)
+
+                #get chunks
+                text_chunks = get_text_chunks(raw_text)
+                # st.write(text_chunks)
+                
+
+                #create vector store
+                # use OpenAI or Instructors for embedding
+                vectorstore = get_vectorstore(text_chunks)
+                
+                # create conversation chain
+                st.session_state.conversation = get_conversation_chain(vectorstore)               
 
 
-index = VectorStoreIndex.from_documents(documents, service_context=service_context)
 
-query_engine = index.as_query_engine()
-response = query_engine.query("How users in the response?")
 
-print(response)
+
+if __name__ == '__main__':
+    main()
