@@ -1,0 +1,12 @@
+﻿,Acceleration,CarbonDioxide,Contact,Illuminance,Motion,Power,Presence,Humidity,Sound,Button,Switch
+Acceleration,,,(cid:2),,(cid:2),,(cid:2),,(cid:2),,(cid:2)
+CarbonDioxide,,,,,(cid:2),,(cid:2),,,,(cid:2)
+Contact,(cid:2),,,,(cid:2),,(cid:2),,(cid:2),,(cid:2)
+Illuminance,,,,,(cid:2),,(cid:2),,,,(cid:2)
+Motion,(cid:2),(cid:2),(cid:2),(cid:2),,(cid:2),(cid:2),(cid:2),(cid:2),(cid:2),(cid:2)
+Power,,,,,(cid:2),,(cid:2),,,,(cid:2)
+Presence,(cid:2),(cid:2),(cid:2),(cid:2),(cid:2),(cid:2),,(cid:2),(cid:2),(cid:2),(cid:2)
+Humidity,,,,,(cid:2),,(cid:2),,,,(cid:2)
+Sound,(cid:2),,(cid:2),,(cid:2),,(cid:2),,,,(cid:2)
+Button,,,,,(cid:2),,(cid:2),,,,(cid:2)
+Switch,(cid:2),(cid:2),(cid:2),(cid:2),(cid:2),(cid:2),(cid:2),(cid:2),(cid:2),(cid:2),

@@ -1,0 +1,6 @@
+﻿OriginalRule,Type,Ruleafterchange,HAWatcher,OCSVM,ARM
+R3,Actionchange,"IfMS1(active),thenL2(on)andL1(on)",0,14,0
+R5,Newrule,"IfMS2(active)B2(click),thenL3(on)L3(toggle)",0,10,0
+R8,Conditionchange,"IfMS3(inactive)for515minutes,thenL4(off)",0,30,67
+R10,Conditionchange,"IfMS4(inactive)for1530minutes,thenL5(off)",0,17,75
+R14,Triggerchange,"IfA(CO2>9501000),thenP2(on)for15minutes",0,17,0

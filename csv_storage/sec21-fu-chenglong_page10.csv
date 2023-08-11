@@ -1,0 +1,49 @@
+﻿ID,Correlation,ID,Correlation,ID,Correlation,ID,Correlation
+C1,"(cid:3)Eilluminance(MS3)(cid:2)Sswitch(L4)(cid:4)
+low off",C2,"(cid:3)Emotion(MS1)→Eswitch(L1)(cid:4)
+active on",C3,"(cid:3)Epresence(PS1)→Econtact(C1)(cid:4)
+present open",C4,"(cid:3)Epresence(PS1)→Econtact(C1)(cid:4)
+present closed"
+C5,"(cid:3)Epresence(PS2)→Econtact(C1)(cid:4)
+present open",C6,"(cid:3)Epower(P2)(cid:2)Sswitch(P2)(cid:4)
+high on",C7,"(cid:3)Epresence(PS2)→Emotion(MS1)(cid:4)
+present active",C8,"(cid:3)Ebutton(B)→Emotion(M1)(cid:4)
+pushed active"
+C9,"(cid:3)Econtact(C1)→Eacceleration(C1)(cid:4)
+open active",C10,"(cid:3)Eswitch(P4)→Epower(P4)(cid:4)
+on high",C11,"(cid:3)Eacceleration(C1)→Econtact(C1)(cid:4)
+active closed",C12,"(cid:3)Eswitch(L4)→Eilluminance(MS3)(cid:4)
+on high"
+C13,"(cid:3)Eswitch(L4)→Eilluminance(MS3)(cid:4)
+off low",C14,"(cid:3)Eswitch(L3)(cid:2)Smotion(MS2)(cid:4)
+on active",C15,"(cid:3)Eswitch(L3)→Eilluminance(MS2)(cid:4)
+on high",C16,"(cid:3)Eswitch(P2)→Epower(P2)(cid:4)
+on high"
+C17,"(cid:3)Eacceleration(C3)→Emotion(MS3)(cid:4)
+active active",C18,"(cid:3)Econtact(C1)(cid:2)Smotion(MS1)(cid:4)
+closed active",C19,"(cid:3)Eswitch(L4)(cid:2)Smotion(MS3)(cid:4)
+on active",C20,"(cid:3)Econtact(C1)(cid:2)Sacceleration(C1)(cid:4)
+closed active"
+C21,"(cid:3)Econtact(C3)(cid:2)Sacceleration(C3)(cid:4)
+closed active",C22,"(cid:3)Emotion(MS3)→Eswitch(L4)(cid:4)
+active on",C23,"(cid:3)Eilluminance(MS3)(cid:2)Sswitch(L4)(cid:4)
+high on",C24,"(cid:3)Eilluminance(MS1)(cid:2)Sswitch(L1)(cid:4)
+low off"
+C25,"(cid:3)Epresence(PS1)→Emotion(MS1)(cid:4)
+present active",C26,"(cid:3)Emotion(MS1)(cid:2)Sswitch(P1)(cid:4)
+active on",C27,"(cid:3)Eacceleration(C1)(cid:2)Scontact(C1)(cid:4)
+active open",C28,"(cid:3)Eacceleration(C2)(cid:2)Smotion(MS2)(cid:4)
+active active"
+C29,"(cid:3)Eswitch(L5)→Eilluminance(MS4)(cid:4)
+on high",C30,"(cid:3)Eswitch(P2)(cid:2)SCO2(A)(cid:4)
+on >950",C31,"(cid:3)Eswitch(P3)(cid:2)Smotion(M1)(cid:4)
+on active",C32,"(cid:3)Epower(P3)(cid:2)Sswitch(P3)(cid:4)
+high on"
+C33,"(cid:3)Econtact(C2)(cid:2)Smotion(MS2)(cid:4)
+open active",C34,"(cid:3)ECO2(A)→Eswitch(P2)(cid:4)
+>950 on",C35,"(cid:3)ECO2(A)(cid:2)Smotion(MS2)(cid:4)
+high active",C36,"(cid:3)Esound(A)(cid:2)Smotion(MS2)(cid:4)
+high active"
+C37,"(cid:3)Econtact(C1)(cid:2)Spresence(PS1)∨Spresence(PS2)(cid:4)
+open present present",,,C38,"(cid:3)Emotion(M2)∧Smode→Eswitch(P4)(cid:4)
+active home on",,
