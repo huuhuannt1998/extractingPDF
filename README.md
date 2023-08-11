@@ -7,4 +7,6 @@
  - Creating for loop for mutiple csv files in Extract_CSV_Agent.ipynb
  - Make sure to put mutiple pdf file in extractingPDF.ipynb
  
- 
+# extractingPDF (08/11 Update)
+Creating for loop for mutiple csv files in Extract_CSV_Agent.ipynb
+Make sure to put mutiple pdf file in extractingPDF.ipynb
